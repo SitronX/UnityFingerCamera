@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,8 +10,7 @@ public class FingerCameraDrag : MonoBehaviour, IDragHandler, IEndDragHandler
     }
 
     public void OnEndDrag(PointerEventData eventData)
-    {
-       
+    {       
         if (_fingerCameraBehaviour.UsePersistentSettings)
             FingerCameraSave.SaveFingerCameraSettings();
     }

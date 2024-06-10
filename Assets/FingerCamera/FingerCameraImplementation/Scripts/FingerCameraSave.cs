@@ -1,10 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
-using static UnityEditor.SceneView;
 
 public class FingerCameraSave
 {
@@ -13,7 +8,7 @@ public class FingerCameraSave
     static string _settingsPath = Application.persistentDataPath + "/fingerCameraSettings.json";
     public static void SaveFingerCameraSettings()
     {
-        string settingsTxt = JsonConvert.SerializeObject(CameraSettings);
+        string settingsTxt = JsonUtility.ToJson(CameraSettings);
         File.WriteAllText(_settingsPath, settingsTxt);
     }
     public static void LoadFingerCameraSettings(bool usePersistence)
@@ -22,14 +17,21 @@ public class FingerCameraSave
         {
             if (usePersistence)
             {
-                if (File.Exists(_settingsPath))
+                try
                 {
-                    string settingsTxt = File.ReadAllText(_settingsPath);
-                    CameraSettings = JsonConvert.DeserializeObject<FingerCameraSettings>(settingsTxt);
+                    if (File.Exists(_settingsPath))
+                    {
+                        string settingsTxt = File.ReadAllText(_settingsPath);
+                        CameraSettings = JsonUtility.FromJson<FingerCameraSettings>(settingsTxt);
+
+                        if(CameraSettings != null )
+                            return;
+                    }
                 }
+                catch { }             
             }
-            else
-                CameraSettings=new FingerCameraSettings();
+            
+            CameraSettings=new FingerCameraSettings();
         }   
     }
 }

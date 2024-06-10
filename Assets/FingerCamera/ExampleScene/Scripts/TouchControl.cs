@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Touch = UnityEngine.Touch;
-using TouchPhase = UnityEngine.TouchPhase;
+
 
 public class TouchControl : MonoBehaviour
 {
@@ -20,8 +15,8 @@ public class TouchControl : MonoBehaviour
 
     List<Tuple<Vector3, Quaternion>> _mainCameraPositions = new List<Tuple<Vector3, Quaternion>>()
     {
-        new Tuple<Vector3, Quaternion>(new Vector3(0, 10, -3), Quaternion.Euler(new Vector3(60, 0, 0))),
-        new Tuple<Vector3, Quaternion>(new Vector3(-5, 9, 1.5f), Quaternion.Euler(new Vector3(60, 90, 0)))
+        new Tuple<Vector3, Quaternion>(new Vector3(-0.5f, 10, -4), Quaternion.Euler(new Vector3(60, 0, 0))),
+        new Tuple<Vector3, Quaternion>(new Vector3(-6, 9, 2f), Quaternion.Euler(new Vector3(60, 90, 0)))
     };
 
     private void Start()
@@ -47,12 +42,11 @@ public class TouchControl : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.touchCount == 1)
+        if (Input.GetMouseButton(0))
         {
-            Touch touch = Input.GetTouch(0);
-            Ray ray = _camera.ScreenPointToRay(touch.position);
+            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
-            if (touch.phase == TouchPhase.Began)
+            if (_initialPos==null)
             {
                 if (Physics.Raycast(ray, out RaycastHit info, 300, 1 << 9))
                 {
@@ -62,45 +56,39 @@ public class TouchControl : MonoBehaviour
                         StartFingerCamera();
                     }
                 }
-
             }
-            else if (touch.phase == TouchPhase.Moved)
+            else if(Input.touchCount<=1)    //If we use touch, on camera manipulation, without this check, it would mess up controls
             {
-                if (_initialPos == null)
-                    return;
-
-                if (Physics.Raycast(ray, out RaycastHit info, 300, 1 << 9))
+                if (Physics.Raycast(ray, out RaycastHit info, 300, 1 << 9|1<<0))
                 {
-                    foreach (PlaceablePosition item in _placeablePositions.Values)
-                        item.ClearHighlight();
+                    _initialPos.Figure.position = info.point + (Vector3.up * 0.2f);
 
-                    _lastHoverPosition = _placeablePositions[info.collider];
+                    if (_placeablePositions.ContainsKey(info.collider))
+                    {
+                        foreach (PlaceablePosition item in _placeablePositions.Values)
+                            item.ClearHighlight();
 
-                    _lastHoverPosition.SetHighlightColor(_lastHoverPosition.Figure == null ? Color.green : Color.red);
-                    _initialPos.Figure.position = info.point + (Vector3.up*0.2f);
+                        _lastHoverPosition = _placeablePositions[info.collider];
+                        _lastHoverPosition.SetHighlightColor(_lastHoverPosition.Figure == null ? Color.green : Color.red);
+                    }
                 }
-
             }
-            else if (touch.phase == TouchPhase.Ended)
+        }
+        else if(_initialPos != null)
+        {
+            _lastHoverPosition.ClearHighlight();
+
+            if (_lastHoverPosition.Figure == null)
             {
-                if (_initialPos == null)
-                    return;
-                
-                _lastHoverPosition.ClearHighlight();
-
-                if (_lastHoverPosition.Figure == null)
-                {
-                    _lastHoverPosition.Figure = _initialPos.Figure;
-                    _lastHoverPosition.PlaceFigureIntoPosition(_initialPos.Figure);
-                    _initialPos.Figure = null;
-                }
-                else
-                    _initialPos.PlaceFigureIntoPosition(_initialPos.Figure);
-
-                _initialPos = null;
-                _fingerCamera.StopFingerCamera();
-
+                _lastHoverPosition.Figure = _initialPos.Figure;
+                _lastHoverPosition.PlaceFigureIntoPosition(_initialPos.Figure);
+                _initialPos.Figure = null;
             }
+            else
+                _initialPos.PlaceFigureIntoPosition(_initialPos.Figure);
+
+            _initialPos = null;
+            _fingerCamera.StopFingerCamera();
         }
     }
     void StartFingerCamera()

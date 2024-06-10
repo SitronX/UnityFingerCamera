@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using UnityEngine.UIElements;
-using static UnityEditor.SceneView;
 
 public class FingerCameraBehaviour : MonoBehaviour
 {
