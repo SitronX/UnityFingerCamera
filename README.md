@@ -1,6 +1,6 @@
 </p>
 <p align="center">
-  <img src="https://github.com/SitronX/UnityFingerCamera/assets/68167377/1378bcd9-e274-4101-b774-57d8fe801cee.png"/>
+  <img src="https://github.com/SitronX/UnityFingerCamera/assets/68167377/b7beb545-99f5-470c-92be-368974e0068c" width=256/>
 </p>
 
 # UnityFingerCamera
@@ -10,9 +10,10 @@ Finger camera is easy to use, modular utility that you simply attach to any worl
 
 This way user can actually see his actions on the object immediately.
 
-Camera can be both be used in built in and URP render pipelines.
 
-### chess showcase here
+https://github.com/SitronX/UnityFingerCamera/assets/68167377/a584d365-fb17-4b15-a808-cc0eb90f889f
+
+
 
 ## How to install
 You have two options how to install it into your project.
@@ -44,13 +45,22 @@ Example scene is primarily made for touch controls, but can also be controlled w
   - Left mouse click - grab the chess figure
   - Right mouse click - move/resize/zoom finger camera window.
 
-
 Note: Example scene is set in built in render pipeline, if you want it to open in URP, simply upgrade the scene materials to URP and everything will work out fine.
 
 ## Real game showcase
 
-- link to game
+Here is a showcase of this asset in real game.
 
-## Consider support
+https://github.com/SitronX/UnityFingerCamera/assets/68167377/03646891-aea1-494d-9bd9-8b01431ac8d7
 
-- link
+The game was main propelent to relase this asset. You can download it free on [Google Play](https://play.google.com/store/apps/details?id=com.SitronCOR.Forcel)
+
+Thanx to community support, this is a second feature "gutted" from the game and made open for community. If curious, you can find the first repository [here](https://github.com/SitronX/UnityTimeRewinder).
+
+## License
+
+This plugin is completely free with [MIT license](https://github.com/SitronX/UnityFingerCamera?tab=MIT-1-ov-file#readme),  you can freely use as you wish :) 
+
+If you really like my projects, please consider buying me a coffee to support my work. All donations will be greatly appreaciated :)
+
+[![BuyMeACoffe](https://github.com/SitronX/UnityFingerCamera/assets/68167377/6559a423-bf31-4c14-96a5-10c0a907944f)](https://buymeacoffee.com/sitronx)
