@@ -7,7 +7,7 @@ public class FingerCameraEnlarge : MonoBehaviour, IDragHandler,IEndDragHandler
     [SerializeField] RectTransform _rectTransform;
     [SerializeField] FingerCameraBehaviour _fingerCameraBehaviour;
 
-    private void Start()
+    private void Awake()
     {
         ChangeOrientationBasedOnEdge(_fingerCameraBehaviour.VerticalEdgeAnchor);
     }

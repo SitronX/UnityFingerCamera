@@ -71,6 +71,8 @@ When the window is opened, several control buttons will appear. It can be resize
 
 If you don't need some of the functionality provided, you can simply delete the controls from the prefab.
 
+**Note:** Don't forget to have an EventSystem present in the scene when interacting with the canvas buttons, otherwise controls won't work.
+
 ## Other properties and methods accessible in code
 
 If you need to control the finger window position/resize/zoom from code instead of the user interface, it is possible. All available methods are in the `FingerCameraBehaviour.cs` script.

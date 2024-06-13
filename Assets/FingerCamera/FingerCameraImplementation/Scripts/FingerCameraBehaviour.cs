@@ -7,41 +7,55 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// Whether the finger camera is on
     /// </summary>
     public bool IsFingerCameraOn { get; private set; }
+    
     /// <summary>
     /// Whether to save finger camera settings so it loads when game restarts
     /// </summary>
+    [field: Tooltip("Whether to save finger camera settings so it loads when game restarts")]
     [field: SerializeField] public bool UsePersistentSettings { get; set; } = true;
+    
     /// <summary>
     /// Minimum size of finger camera window
     /// </summary>
+    [field: Tooltip("Minimum size of finger camera window")]
     [field: SerializeField] public float MinWindowSize { get; set; } = 300;
+    
     /// <summary>
     /// Maximum size of finger camera window
     /// </summary>
+    [field: Tooltip("Maximum size of finger camera window")]
     [field: SerializeField] public float MaxWindowSize { get; set; } = 900;
+
     /// <summary>
-    /// Do we want to defaultly show finger camera window on top or bottom?
+    /// Do we want to defaultly anchor finger camera window on top or bottom?
     /// </summary>
+    [field: Tooltip("Do we want to defaultly anchor finger camera window on top or bottom?")]
     [field: SerializeField] public VerticalEdge VerticalEdgeAnchor { get; private set; } = VerticalEdge.Top;
+
     /// <summary>
-    /// Do we want to defaultly show finger camera window on left or right ?
+    /// Do we want to defaultly anchor finger camera window on left or right ?
     /// </summary>
+    [field: Tooltip("Do we want to defaultly anchor finger camera window on left or right ?")]
     [field: SerializeField] public HorizontalEdge HorizontalEdgeAnchor { get; private set; } = HorizontalEdge.Left;
+
     /// <summary>
     /// How close can finger camera get to the tracked objects
     /// </summary>
+    [field: Tooltip("How close can finger camera get to the tracked objects")]
     [SerializeField] float _fingerCameraMinDistanceClamp = 5;
+
     /// <summary>
     /// How far can finger camera get from the tracked objects
     /// </summary>
+    [field: Tooltip("How far can finger camera get from the tracked objects")]
     [SerializeField] float _fingerCameraMaxDistanceClamp = 70;
+
     /// <summary>
     /// Intensity of zoom effect when +/- buttons are pressed in window
     /// </summary>
+    [field: Tooltip("Intensity of zoom effect when +/- buttons are pressed in window")]
     [SerializeField] float _fingerCameraZoomStep = 1;
    
-
-
     [SerializeField] Camera _camera;
     [SerializeField] RectTransform _rectTransform;
     [SerializeField] RenderTexture _renderTexture;
@@ -137,15 +151,17 @@ public class FingerCameraBehaviour : MonoBehaviour
             _animator.SetBool("CameraAppear", false);
         }
     }
-    #region InternalMethods
+
     public enum HorizontalEdge
     {
-        Left,Right
+        Left, Right
     }
     public enum VerticalEdge
     {
-        Bottom,Top
+        Bottom, Top
     }
+    #region InternalMethods
+
     RectTransform.Edge GetRectEdge(HorizontalEdge edge)
     {
         if (edge == HorizontalEdge.Right)
