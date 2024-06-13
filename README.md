@@ -15,7 +15,7 @@ Here is a showcase of the finger camera in provided example scene.
 
 https://github.com/SitronX/UnityFingerCamera/assets/68167377/a584d365-fb17-4b15-a808-cc0eb90f889f
 
-**Note:** Although this asset is primarily designed to mitigate the issue of finger blocking, it can also be used in other scenarios, such as showing what is currently happening on a specific object in the room next to the player.
+**Note:** Although this asset is primarily designed to mitigate the issue of finger blocking, it can also be used in other scenarios, such as showing what is currently happening on a specific object that the player can't see (e.g., an object placed in another room).
 
 ## How to install
 You have two options for installing it into your project:
