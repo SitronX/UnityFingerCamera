@@ -20,7 +20,7 @@ https://github.com/SitronX/UnityFingerCamera/assets/68167377/a584d365-fb17-4b15-
 ## How to install
 You have two options for installing it into your project:
 
-- **First option**: Download the prepared Unity package from the GitHub release section. After downloading, open your Unity project and simply open the downloaded package. An import dialogue window should appear (Unity should automatically associate the package with itself). If it doesn't work for you, you can also import it through the Unity Package Manager.
+- **First option**: Download the prepared Unity package from the GitHub [release section](https://github.com/SitronX/UnityFingerCamera/releases). After downloading, open your Unity project and simply open the downloaded package. An import dialogue window should appear (Unity should automatically associate the package with itself). If it doesn't work for you, you can also import it through the Unity Package Manager.
 
 - **Second option**: Download this sample project from GitHub and start using it, or just import the FingerCamera folder under `Assets/` into your project.
 
