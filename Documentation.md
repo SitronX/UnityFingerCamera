@@ -15,9 +15,9 @@ Incorporate the reference of `FingerCameraBehaviour.cs` into your touch interact
 
 In the part of the code where you grab the object, simply call the main method:
 
-`StartFingerCamera(Transform trackedObject,Vector3 worldDirection,Vector3 worldUp=Vector3.up)`
+`StartFingerCamera(Transform trackedObject,Vector3 cameraNormalizedDirection,Vector3 worldUp=Vector3.up)`
 - *Transform trackedObject*: The transform that the finger camera should follow and be parented to.
-- *Vector3 worldDirection*: The direction from which the finger camera should look at the tracked object. Experiment with different directions to see what suits your needs. For starters, I recommend `Vector3.down` for a top-down view.
+- *Vector3 cameraNormalizedDirection*: The normalized direction from which the finger camera should look at the tracked object. Experiment with different directions to see what suits your needs. For starters, I recommend `Vector3.down` for a top-down view.
 - *Vector3 worldUp*: By default, this is `Vector3.up`, but it can be changed, especially for different camera rolls. This is particularly useful when the camera direction is `Vector3.down`.
 
 That's it! The finger camera will launch and follow the object from the specified angle.

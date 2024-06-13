@@ -117,11 +117,11 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// Main method to start finger camera. Can be called even when it already started to refresh values
     /// </summary>
     /// <param name="trackedObject">What transform should finger camera follow/be parented to</param>
-    /// <param name="worldDirection">From what direction should finger camera look on tracked object. Try what different directions suits you, for starters i recommed Vector.down</param>
+    /// <param name="cameraNormalizedDirection">From what direction should finger camera look on tracked object. Try what different directions suits you, for starters i recommed Vector.down</param>
     /// <param name="worldUp">Define up parameter. Usually it is Vector.up, but can be changed especially for different camera roll. Helpfull especially when camera direction is Vector.down</param>
-    public void StartFingerCamera(Transform trackedObject,Vector3 worldDirection,Vector3 worldUp)
+    public void StartFingerCamera(Transform trackedObject,Vector3 cameraNormalizedDirection, Vector3 worldUp)
     {
-        _normalizedWorldDirection = worldDirection.normalized;
+        _normalizedWorldDirection = cameraNormalizedDirection.normalized;
         
         _camera.transform.parent = trackedObject;
         SetFingerCamera();
