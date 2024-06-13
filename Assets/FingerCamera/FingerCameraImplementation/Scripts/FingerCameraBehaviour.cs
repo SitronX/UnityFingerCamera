@@ -20,6 +20,14 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// </summary>
     [field: SerializeField] public float MaxWindowSize { get; set; } = 900;
     /// <summary>
+    /// Do we want to defaultly show finger camera window on top or bottom?
+    /// </summary>
+    [field: SerializeField] public VerticalEdge VerticalEdgeAnchor { get; private set; } = VerticalEdge.Top;
+    /// <summary>
+    /// Do we want to defaultly show finger camera window on left or right ?
+    /// </summary>
+    [field: SerializeField] public HorizontalEdge HorizontalEdgeAnchor { get; private set; } = HorizontalEdge.Left;
+    /// <summary>
     /// How close can finger camera get to the tracked objects
     /// </summary>
     [SerializeField] float _fingerCameraMinDistanceClamp = 5;
@@ -31,14 +39,7 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// Intensity of zoom effect when +/- buttons are pressed in window
     /// </summary>
     [SerializeField] float _fingerCameraZoomStep = 1;
-    /// <summary>
-    /// Do we want to defaultly show finger camera window on top or bottom?
-    /// </summary>
-    [SerializeField] VerticalEdge _verticalEdgeAnchor = VerticalEdge.Top;
-    /// <summary>
-    /// Do we want to defaultly show finger camera window on left or right ?
-    /// </summary>
-    [SerializeField] HorizontalEdge _horizontalEdgeAnchor = HorizontalEdge.Left;
+   
 
 
     [SerializeField] Camera _camera;
@@ -68,8 +69,8 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// <param name="size">Overall size of window</param>
     public void SetInsets(float verticalInset, float horizontalInset, float size)
     {
-        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(_verticalEdgeAnchor), verticalInset, size);
-        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(_horizontalEdgeAnchor), horizontalInset, size);
+        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(VerticalEdgeAnchor), verticalInset, size);
+        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(HorizontalEdgeAnchor), horizontalInset, size);
 
         _renderTexture.Release();
         _renderTexture.width = (int)(_rectTransform.sizeDelta.y * Screen.height * 0.001f);
@@ -85,7 +86,7 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// <param name="deltaChange">Positive value will enlarge the window, negative will shrink it by the set amount</param>
     public void ChangeWindowSize(float deltaChange)
     {
-        float recommendedSize = (_rectTransform.sizeDelta.y - (deltaChange / _canvas.scaleFactor));
+        float recommendedSize = (_rectTransform.sizeDelta.y + RealToInset(deltaChange / _canvas.scaleFactor));
         float newClampedSize = ClampSize(recommendedSize);
         SetInsets(FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.HorizontalInset, newClampedSize);
     }
@@ -165,12 +166,16 @@ public class FingerCameraBehaviour : MonoBehaviour
     }
     Vector2 RealToInset(Vector2 realMove)
     {
-        if(_verticalEdgeAnchor==VerticalEdge.Top)
+        if(VerticalEdgeAnchor==VerticalEdge.Top)
             realMove.y=-realMove.y;
-        if(_horizontalEdgeAnchor==HorizontalEdge.Right)
+        if(HorizontalEdgeAnchor==HorizontalEdge.Right)
             realMove.x=-realMove.x;
 
         return realMove;
+    }
+    float RealToInset(float realMove)
+    {
+        return VerticalEdgeAnchor == VerticalEdge.Top? -realMove:realMove;
     }
     void MoveFingerCamera(float moveValue)
     {

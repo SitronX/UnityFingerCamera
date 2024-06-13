@@ -5,7 +5,7 @@
 
 # UnityFingerCamera
 
-Touch input on mobile devices has one major issue: users typically don't see what they are really doing on the screen because they cannot see below their finger. This is especially problematic when performing drag-and-drop operations on world objects. This plugin will help you mitigate that issue.
+Touch input on mobile devices has one major issue: users typically don't see what they are really doing on the screen because they cannot see below their finger. This is especially problematic when performing drag-and-drop operations on world objects. This asset will help you mitigate that issue.
 
 Finger camera is easy-to-use, modular utility that you can attach to any world object and the camera will follow the object from a specified angle.
 
@@ -15,7 +15,7 @@ Here is a showcase of the finger camera in provided example scene.
 
 https://github.com/SitronX/UnityFingerCamera/assets/68167377/a584d365-fb17-4b15-a808-cc0eb90f889f
 
-
+**Note:** Although this asset is primarily designed to mitigate the issue of finger blocking, it can also be used in other scenarios, such as showing what is currently happening on a specific object in the room next to the player.
 
 ## How to install
 You have two options for installing it into your project:
@@ -66,7 +66,7 @@ Thanks to community support, this is the second feature "gutted" from the game a
 
 ## License
 
-This plugin is completely free under the [MIT license](https://github.com/SitronX/UnityFingerCamera?tab=MIT-1-ov-file#readme), so you can use it as you wish :)
+This asset is completely free under the [MIT license](https://github.com/SitronX/UnityFingerCamera?tab=MIT-1-ov-file#readme), so you can use it as you wish :)
 
 If you like my projects, please consider buying me a coffee to support my work. All donations will be greatly appreaciated :)
 

@@ -785,11 +785,11 @@ MonoBehaviour:
   <UsePersistentSettings>k__BackingField: 1
   <MinWindowSize>k__BackingField: 300
   <MaxWindowSize>k__BackingField: 900
+  <VerticalEdgeAnchor>k__BackingField: 1
+  <HorizontalEdgeAnchor>k__BackingField: 0
   _fingerCameraMinDistanceClamp: 5
   _fingerCameraMaxDistanceClamp: 70
   _fingerCameraZoomStep: 1
-  _verticalEdgeAnchor: 1
-  _horizontalEdgeAnchor: 0
   _camera: {fileID: 4790465976437767924}
   _rectTransform: {fileID: 7031971071253116967}
   _renderTexture: {fileID: 8400000, guid: f1ad371d824b475448f9cfc84b2d2b4e, type: 2}
@@ -1149,7 +1149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -16.238}
+  m_AnchoredPosition: {x: 0, y: 25}
   m_SizeDelta: {x: 80, y: 44.3221}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2534835155314495866
@@ -1246,6 +1246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c047c5441d82d145a46df7745fd197f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 1197248013599011077}
   _fingerCameraBehaviour: {fileID: 739884541858064791}
 --- !u!1 &9175647265918993644
 GameObject:
