@@ -22,7 +22,7 @@ In the part of the code where you grab the object, simply call the main method:
 
 That's it! The finger camera will launch and follow the object from the specified angle.
 
-**Note:* The `StartFingerCamera()` method can be called several times if you need to update any tracked parameters.
+**Note:** The `StartFingerCamera()` method can be called several times if you need to update any tracked parameters.
 
 ### Disabling camera
 When you want to turn off finger camera (when user releases the grabbed object), simply call the method:
