@@ -7,9 +7,10 @@ Finger camera is easy-to-use, modular utility that you can attach to any world o
 
 Locate **FingerCameraPrefab** in `FingerCamera/FingerCameraImplementation/Prefabs` and add it to your scene.
 
-Incorporate the reference of `FingerCameraBehaviour.cs` into your touch interaction script.
+Incorporate the reference of `FingerCameraBehaviour.cs` into your touch interaction script (following methods will be called on this script).
 
 <img src="https://github.com/SitronX/UnityFingerCamera/assets/68167377/182ae5e6-d69e-4418-a9dc-43956c1d3847"/>
+
 
 ### Enabling camera
 
