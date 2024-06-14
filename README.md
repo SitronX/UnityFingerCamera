@@ -38,7 +38,7 @@ You have two options for installing it into your project:
 
 ## How to use
 
-- Detailed steps on how to use FingerCamera are explained in the [documentation](Documentation.md).
+Detailed steps on how to use FingerCamera are explained in the [documentation](Documentation.md).
 
 If you still face any problems, feel free to contact me. I can help you out.
 
@@ -52,7 +52,7 @@ The example scene is primarily designed for touch controls but can also be contr
   - Left mouse click: grab the chess piece
   - Right mouse click: move/resize/zoom the finger camera window
 
-**Note:** The example scene is set in the Built-in Render Pipeline. If you want to open it in URP, simply upgrade the scene materials to URP, and everything will work fine.
+**Note:** The example scene is created in the Built-in Render Pipeline. If you want to open it in URP, simply upgrade the scene materials to URP, and everything will work fine.
 
 ## Real game showcase
 
