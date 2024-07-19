@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class FingerCameraBehaviour : MonoBehaviour
@@ -7,7 +8,8 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// Whether the finger camera is on
     /// </summary>
     public bool IsFingerCameraOn { get; private set; }
-    
+    public Action<RectTransform.Edge> VerticalEdgeAnchorChanged { get; set; }
+    public Action<RectTransform.Edge> HorizontalEdgeAnchorChanged { get; set; }
     /// <summary>
     /// Whether to save finger camera settings so it loads when game restarts
     /// </summary>
@@ -64,7 +66,9 @@ public class FingerCameraBehaviour : MonoBehaviour
     Coroutine _cameraMoveCoroutine;
     Animator _animator;
     Vector3 _normalizedWorldDirection;
-   
+    RectTransform.Edge _lastHorEdge;
+    RectTransform.Edge _lastVerEdge;
+
     /// <summary>
     /// Resets finger camera & window to default values
     /// </summary>
@@ -72,7 +76,7 @@ public class FingerCameraBehaviour : MonoBehaviour
     {
         FingerCameraSave.CameraSettings = new FingerCameraSettings();
         FingerCameraSave.SaveFingerCameraSettings();
-        SetInsets(FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.HorizontalInset, FingerCameraSave.CameraSettings.Size);
+        SetInsets(FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.HorizontalInset, ClampSize(FingerCameraSave.CameraSettings.Size));
         SetFingerCamera();
     }
     /// <summary>
@@ -83,8 +87,21 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// <param name="size">Overall size of window</param>
     public void SetInsets(float verticalInset, float horizontalInset, float size)
     {
-        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(VerticalEdgeAnchor), verticalInset, size);
-        _rectTransform.SetInsetAndSizeFromParentEdge(GetRectEdge(HorizontalEdgeAnchor), horizontalInset, size);
+        RectTransform.Edge verEdge = GetRectEdge(VerticalEdgeAnchor);
+        if(verEdge!=_lastVerEdge)
+        {
+            _lastVerEdge = verEdge;
+            VerticalEdgeAnchorChanged?.Invoke(_lastVerEdge);
+        }
+        RectTransform.Edge horEdge= GetRectEdge(HorizontalEdgeAnchor);
+        if(horEdge!=_lastHorEdge)
+        {
+            _lastHorEdge = horEdge;
+            HorizontalEdgeAnchorChanged?.Invoke(_lastHorEdge);
+        }
+
+        _rectTransform.SetInsetAndSizeFromParentEdge(_lastVerEdge, verticalInset, size);
+        _rectTransform.SetInsetAndSizeFromParentEdge(_lastHorEdge, horizontalInset, size);
 
         _renderTexture.Release();
         _renderTexture.width = (int)(_rectTransform.sizeDelta.y * Screen.height * 0.001f);
@@ -111,7 +128,7 @@ public class FingerCameraBehaviour : MonoBehaviour
     public void ChangeWindowPosition(Vector2 deltaChange)
     {
         Vector2 scaledDeltaChange = RealToInset(deltaChange / _canvas.scaleFactor);
-        SetInsets(FingerCameraSave.CameraSettings.VerticalInset+ scaledDeltaChange.y, FingerCameraSave.CameraSettings.HorizontalInset+ scaledDeltaChange.x, FingerCameraSave.CameraSettings.Size);
+        SetInsets(FingerCameraSave.CameraSettings.VerticalInset+ scaledDeltaChange.y, FingerCameraSave.CameraSettings.HorizontalInset+ scaledDeltaChange.x, ClampSize(FingerCameraSave.CameraSettings.Size));
     }
     /// <summary>
     /// Main method to start finger camera. Can be called even when it already started to refresh values
@@ -154,28 +171,50 @@ public class FingerCameraBehaviour : MonoBehaviour
 
     public enum HorizontalEdge
     {
-        Left, Right
+        Left, Right,
+        /// <summary>
+        /// Horizontal edge is set automatically based on user touch position. If user touches left side of the screen, the right edge is choosen and vice versa
+        /// </summary>
+        Auto
     }
     public enum VerticalEdge
     {
-        Bottom, Top
+        Bottom, Top,
+        /// <summary>
+        /// Vertical edge is set automatically based on user touch position. If user touches bottom side of the screen, the top edge is choosen and vice versa
+        /// </summary>
+        Auto
     }
-    #region InternalMethods
-
-    RectTransform.Edge GetRectEdge(HorizontalEdge edge)
+    public RectTransform.Edge GetRectEdge(HorizontalEdge edge)
     {
         if (edge == HorizontalEdge.Right)
             return RectTransform.Edge.Right;
-        else
+        else if (edge == HorizontalEdge.Left)
             return RectTransform.Edge.Left;
+        else
+            return GetHorizontalAutoEdge();
     }
-    RectTransform.Edge GetRectEdge(VerticalEdge edge)
+    public RectTransform.Edge GetRectEdge(VerticalEdge edge)
     {
         if (edge == VerticalEdge.Bottom)
             return RectTransform.Edge.Bottom;
-        else
+        else if (edge == VerticalEdge.Top)
             return RectTransform.Edge.Top;
+        else
+            return GetVerticalAutoEdge();
     }
+    #region InternalMethods
+
+
+    RectTransform.Edge GetHorizontalAutoEdge()
+    {
+        return Input.mousePosition.x< (Screen.width*0.5f) ?RectTransform.Edge.Right : RectTransform.Edge.Left;
+    }
+    RectTransform.Edge GetVerticalAutoEdge()
+    {
+        return Input.mousePosition.y < (Screen.height * 0.5f) ? RectTransform.Edge.Top : RectTransform.Edge.Bottom;
+    }
+   
     float ClampSize(float size)
     {
         return Mathf.Min(MaxWindowSize, Mathf.Max(MinWindowSize, size));
@@ -205,8 +244,33 @@ public class FingerCameraBehaviour : MonoBehaviour
         FingerCameraSave.LoadFingerCameraSettings(UsePersistentSettings);
 
         _animator = GetComponent<Animator>();
-        SetInsets(FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.HorizontalInset, FingerCameraSave.CameraSettings.Size);
-
+        SetInsets(FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.HorizontalInset, ClampSize(FingerCameraSave.CameraSettings.Size));
+    }
+    private void Update()
+    {
+        if(IsFingerCameraOn)    
+        {
+            if (VerticalEdgeAnchor == VerticalEdge.Auto)    //In case we use auto edge, we need to update the edge based on user input
+            {
+                RectTransform.Edge verEdge = GetVerticalAutoEdge();
+                if (_lastVerEdge!= verEdge )
+                {
+                    _lastVerEdge = verEdge ;
+                    _rectTransform.SetInsetAndSizeFromParentEdge(_lastVerEdge, FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.Size);
+                    VerticalEdgeAnchorChanged?.Invoke(_lastVerEdge);
+                }
+            }
+            if (HorizontalEdgeAnchor == HorizontalEdge.Auto)
+            {
+                RectTransform.Edge horEdge = GetHorizontalAutoEdge();
+                if (_lastHorEdge != horEdge)
+                {
+                    _lastHorEdge = horEdge;
+                    _rectTransform.SetInsetAndSizeFromParentEdge(_lastHorEdge, FingerCameraSave.CameraSettings.HorizontalInset, FingerCameraSave.CameraSettings.Size);
+                    HorizontalEdgeAnchorChanged?.Invoke(_lastHorEdge);
+                }
+            }
+        }
     }
     void ButtonDown(float value)
     {

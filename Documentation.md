@@ -56,6 +56,8 @@ Here is a description of the main parameters you can set up:
 
 - *FingerCameraZoomStep:* The intensity of the zoom effect when the user presses the +/- buttons in the window.
 
+**Note:** Starting from version 1.1, the properties *VerticalEdgeAnchor* and *HorizontalEdgeAnchor* also have the option of autoedge. When autoedge is selected, the edge is automatically set to the opposite side of the finger's position on the screen.
+
 ## Setting default finger window parameters
 
 If you need to change the default parameters from which the finger camera starts, you can change the values in the `FingerCameraSettings.cs` script. 

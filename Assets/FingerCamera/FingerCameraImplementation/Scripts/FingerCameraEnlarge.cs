@@ -9,15 +9,16 @@ public class FingerCameraEnlarge : MonoBehaviour, IDragHandler,IEndDragHandler
 
     private void Awake()
     {
-        ChangeOrientationBasedOnEdge(_fingerCameraBehaviour.VerticalEdgeAnchor);
+        ChangeOrientationBasedOnEdge(_fingerCameraBehaviour.GetRectEdge(_fingerCameraBehaviour.VerticalEdgeAnchor));
+        _fingerCameraBehaviour.VerticalEdgeAnchorChanged += (RectTransform.Edge edge) => ChangeOrientationBasedOnEdge(edge);       
     }
     public void OnDrag(PointerEventData eventData)
     {
         _fingerCameraBehaviour.ChangeWindowSize(eventData.delta.y);
     }
-    public void ChangeOrientationBasedOnEdge(VerticalEdge edge)
+    public void ChangeOrientationBasedOnEdge(RectTransform.Edge edge)
     {
-        _rectTransform.SetInsetAndSizeFromParentEdge(edge == VerticalEdge.Top? RectTransform.Edge.Bottom:RectTransform.Edge.Top, -15, 80);  //Enlarging handle always on the opposite vertical edge
+        _rectTransform.SetInsetAndSizeFromParentEdge(edge==RectTransform.Edge.Top?RectTransform.Edge.Bottom:RectTransform.Edge.Top, -15, 80);  //Enlarging handle always on the opposite vertical edge
     }
     
     public void OnEndDrag(PointerEventData eventData)
