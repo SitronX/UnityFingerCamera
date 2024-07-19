@@ -1,4 +1,4 @@
-# Unity Finger camera documentation <sub>(ver 1.0)</sub>
+# Unity Finger camera documentation <sub>(ver 1.1)</sub>
 
 Finger camera is easy-to-use, modular utility that you can attach to any world object and the camera will follow the object from a specified angle. All the scripts mentioned here are located in `FingerCamera/FingerCameraImplementation/Scripts`.
 
