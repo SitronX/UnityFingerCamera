@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class FingerCameraBehaviour : MonoBehaviour
@@ -41,6 +42,18 @@ public class FingerCameraBehaviour : MonoBehaviour
     [field: SerializeField] public HorizontalEdge HorizontalEdgeAnchor { get; private set; } = HorizontalEdge.Left;
 
     /// <summary>
+    /// The number of touch to react to (when multiple fingers are on the screen). Affects window automatic repositioning and other stuff. Defaultly set here to first touch
+    /// </summary>
+    [field: Tooltip("The number of touch to react to (when multiple fingers are on the screen). Affects window atuomatic repositioning and other stuff. Defaultly set here to first touch")]
+    [SerializeField] InputHelper.TouchNumber _touchNumberToReact = InputHelper.TouchNumber.First;
+
+    /// <summary>
+    /// Should the finger camera position be automatically updated based on user touch position? This can work really well with auto-edges mode
+    /// </summary>
+    [field: Tooltip("Should the finger camera position be automatically updated based on user touch position? This can work really well with auto-edges mode")]
+    [SerializeField] bool _automaticallyUpdateWindowPosition = false;
+
+    /// <summary>
     /// How close can finger camera get to the tracked objects
     /// </summary>
     [field: Tooltip("How close can finger camera get to the tracked objects")]
@@ -57,7 +70,8 @@ public class FingerCameraBehaviour : MonoBehaviour
     /// </summary>
     [field: Tooltip("Intensity of zoom effect when +/- buttons are pressed in window")]
     [SerializeField] float _fingerCameraZoomStep = 1;
-   
+
+
     [SerializeField] Camera _camera;
     [SerializeField] RectTransform _rectTransform;
     [SerializeField] RenderTexture _renderTexture;
@@ -208,11 +222,25 @@ public class FingerCameraBehaviour : MonoBehaviour
 
     RectTransform.Edge GetHorizontalAutoEdge()
     {
-        return Input.mousePosition.x< (Screen.width*0.5f) ?RectTransform.Edge.Right : RectTransform.Edge.Left;
+        InputHelper.GetTouch(_touchNumberToReact, out Vector3 lastPos);
+
+        RectTransform.Edge resEdge = lastPos.x < (Screen.width * 0.5f) ? RectTransform.Edge.Right : RectTransform.Edge.Left;
+
+        if (_automaticallyUpdateWindowPosition)                         //We need to actually switch the edges if we use autoposition
+            resEdge = resEdge == RectTransform.Edge.Right ? RectTransform.Edge.Left : RectTransform.Edge.Right;
+
+        return resEdge;
     }
     RectTransform.Edge GetVerticalAutoEdge()
     {
-        return Input.mousePosition.y < (Screen.height * 0.5f) ? RectTransform.Edge.Top : RectTransform.Edge.Bottom;
+        InputHelper.GetTouch(_touchNumberToReact, out Vector3 lastPos);
+
+        RectTransform.Edge resEdge = lastPos.y < (Screen.height * 0.5f) ? RectTransform.Edge.Top : RectTransform.Edge.Bottom;
+
+        if (_automaticallyUpdateWindowPosition)                         //We need to actually switch the edges if we use autoposition
+            resEdge = resEdge==RectTransform.Edge.Top ? RectTransform.Edge.Bottom : RectTransform.Edge.Top;
+
+        return resEdge;
     }
    
     float ClampSize(float size)
@@ -221,16 +249,16 @@ public class FingerCameraBehaviour : MonoBehaviour
     }
     Vector2 RealToInset(Vector2 realMove)
     {
-        if(VerticalEdgeAnchor==VerticalEdge.Top)
+        if(_lastVerEdge==RectTransform.Edge.Top)
             realMove.y=-realMove.y;
-        if(HorizontalEdgeAnchor==HorizontalEdge.Right)
+        if(_lastHorEdge== RectTransform.Edge.Right)
             realMove.x=-realMove.x;
 
         return realMove;
     }
     float RealToInset(float realMove)
     {
-        return VerticalEdgeAnchor == VerticalEdge.Top? -realMove:realMove;
+        return _lastVerEdge == RectTransform.Edge.Top? -realMove:realMove;
     }
     void MoveFingerCamera(float moveValue)
     {
@@ -255,8 +283,7 @@ public class FingerCameraBehaviour : MonoBehaviour
                 RectTransform.Edge verEdge = GetVerticalAutoEdge();
                 if (_lastVerEdge!= verEdge )
                 {
-                    _lastVerEdge = verEdge ;
-                    _rectTransform.SetInsetAndSizeFromParentEdge(_lastVerEdge, FingerCameraSave.CameraSettings.VerticalInset, FingerCameraSave.CameraSettings.Size);
+                    _lastVerEdge = verEdge;
                     VerticalEdgeAnchorChanged?.Invoke(_lastVerEdge);
                 }
             }
@@ -266,10 +293,29 @@ public class FingerCameraBehaviour : MonoBehaviour
                 if (_lastHorEdge != horEdge)
                 {
                     _lastHorEdge = horEdge;
-                    _rectTransform.SetInsetAndSizeFromParentEdge(_lastHorEdge, FingerCameraSave.CameraSettings.HorizontalInset, FingerCameraSave.CameraSettings.Size);
                     HorizontalEdgeAnchorChanged?.Invoke(_lastHorEdge);
                 }
             }
+            float vInset = FingerCameraSave.CameraSettings.VerticalInset;
+            float hInset = FingerCameraSave.CameraSettings.HorizontalInset;
+
+            if (_automaticallyUpdateWindowPosition)
+            {
+                InputHelper.GetTouch(_touchNumberToReact, out Vector3 lastPos);
+
+                if (_lastVerEdge==RectTransform.Edge.Top)
+                    vInset += (Screen.height- lastPos.y)/ _canvas.scaleFactor;
+                else
+                    vInset += lastPos.y / _canvas.scaleFactor;
+
+                if(_lastHorEdge==RectTransform.Edge.Right)
+                    hInset += (Screen.width- lastPos.x)/ _canvas.scaleFactor;
+                else
+                    hInset += lastPos.x / _canvas.scaleFactor;
+
+            }
+            _rectTransform.SetInsetAndSizeFromParentEdge(_lastVerEdge, vInset, FingerCameraSave.CameraSettings.Size);
+            _rectTransform.SetInsetAndSizeFromParentEdge(_lastHorEdge, hInset, FingerCameraSave.CameraSettings.Size);
         }
     }
     void ButtonDown(float value)

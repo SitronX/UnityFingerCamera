@@ -42,17 +42,31 @@ Detailed steps on how to use FingerCamera are explained in the [documentation](D
 
 If you still face any problems, feel free to contact me. I can help you out.
 
-## Example scene
+## Example scenes
 
-An example scene demonstrating basic interaction on a chessboard is available. The scene is located under `Assets/FingerCamera
-/ExampleScene`
+An example scenes demonstrating basic interaction on a chessboard are available. The scenes are located under `Assets/FingerCamera/ExampleScene`
 
-The example scene is primarily designed for touch controls but can also be controlled with mouse input.
+The example scenes are primarily designed for touch controls but can also be controlled with mouse input.
+
+**Note:** The examples scenes are created in the Built-in Render Pipeline. If you want to open it in URP, simply upgrade the scene materials to URP, and everything will work fine.
+
+### First example scene
+The first example scene showcases the usage with 3D elements on chess board.
+
+The controls are:
 
   - Left mouse click: grab the chess piece
   - Right mouse click: move/resize/zoom the finger camera window
 
-**Note:** The example scene is created in the Built-in Render Pipeline. If you want to open it in URP, simply upgrade the scene materials to URP, and everything will work fine.
+### Second example scene
+The second example scene showcases the drag behaviour with UI stuff. Also some additional features are shown here, like closest edge detection and window finger tracking.
+
+![FingerCameraUI-ezgif com-optimize](https://github.com/user-attachments/assets/9f0a7071-d3fb-4164-9856-b87cbe4ce7ca)
+
+The controls are:
+
+- Left mouse click: Grab and do drag & drop to the other side
+
 
 ## Real game showcase
 

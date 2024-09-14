@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static FingerCameraBehaviour;
 
 public class FingerCameraEnlarge : MonoBehaviour, IDragHandler,IEndDragHandler
 {
     [SerializeField] RectTransform _rectTransform;
     [SerializeField] FingerCameraBehaviour _fingerCameraBehaviour;
+    [SerializeField] InputHelper.TouchNumber _touchNumberToReact = InputHelper.TouchNumber.Last;
 
     private void Awake()
     {
@@ -14,7 +14,10 @@ public class FingerCameraEnlarge : MonoBehaviour, IDragHandler,IEndDragHandler
     }
     public void OnDrag(PointerEventData eventData)
     {
-        _fingerCameraBehaviour.ChangeWindowSize(eventData.delta.y);
+        if (InputHelper.GetTouch(_touchNumberToReact, out Vector3 lastPos, out Vector2 touchDelta,out int inputCount))
+            _fingerCameraBehaviour.ChangeWindowSize(touchDelta.y);
+        else
+            _fingerCameraBehaviour.ChangeWindowSize(eventData.delta.y);
     }
     public void ChangeOrientationBasedOnEdge(RectTransform.Edge edge)
     {

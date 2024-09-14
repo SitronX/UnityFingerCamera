@@ -42,9 +42,11 @@ public class TouchControl : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        InputHelper.GetTouch(InputHelper.TouchNumber.First, out Vector3 lastPos, out Vector2 lastTouchDelta, out int inputCount);
+
+        if (inputCount>0)
         {
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = _camera.ScreenPointToRay(lastPos);
 
             if (_initialPos==null)
             {
@@ -57,7 +59,7 @@ public class TouchControl : MonoBehaviour
                     }
                 }
             }
-            else if(Input.touchCount<=1)    //If we use touch, on camera manipulation, without this check, it would mess up controls
+            else
             {
                 if (Physics.Raycast(ray, out RaycastHit info, 300, 1 << 9|1<<0))
                 {

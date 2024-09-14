@@ -1,4 +1,4 @@
-# Unity Finger camera documentation <sub>(ver 1.1)</sub>
+# Unity Finger camera documentation <sub>(ver 1.2)</sub>
 
 Finger camera is easy-to-use, modular utility that you can attach to any world object and the camera will follow the object from a specified angle. All the scripts mentioned here are located in `FingerCamera/FingerCameraImplementation/Scripts`.
 
@@ -36,7 +36,7 @@ If something goes wrong (e.g., the user repositions the window outside of the sc
 
 ## Setting optionable parameters
 
-<img src="https://github.com/SitronX/UnityFingerCamera/assets/68167377/f55380b3-e6b0-4102-b479-71618cc05aed"/>
+![properties](https://github.com/user-attachments/assets/170019d0-fd3b-4e65-a312-d1d0f6fefbfa)
 
 Here is a description of the main parameters you can set up:
 
@@ -50,13 +50,19 @@ Here is a description of the main parameters you can set up:
 
 - *HorizontalEdgeAnchor:* Choose the horizontal edge to which the window is anchored. The resizing behavior depends on this edge.
 
+- *TouchNumberToReact:* The number of touch to react to (when multiple fingers are on the screen). Affects window automatic repositioning and other stuff. Defaultly set here to the first touch.
+
+- *AutomaticallyUpdateWindowPosition:* (visually similar to parenting) Should the finger-camera window position be automatically updated based on user touch position? This can work really well with auto-edges mode.
+
 - *FingerCameraMinDistanceClamp:* How close the finger camera can get to the tracked objects.
 
 - *FingerCameraMaxDistanceClamp:* How far the finger camera can get from the tracked objects.
 
 - *FingerCameraZoomStep:* The intensity of the zoom effect when the user presses the +/- buttons in the window.
 
-**Note:** Starting from version 1.1, the properties *VerticalEdgeAnchor* and *HorizontalEdgeAnchor* also have the option of autoedge. When autoedge is selected, the edge is automatically set to the opposite side of the finger's position on the screen.
+**Note:** Starting from version 1.1, the properties *VerticalEdgeAnchor* and *HorizontalEdgeAnchor* also have the option of autoedge. When autoedge is selected, the edge is automatically set to the opposite side of the finger's position on the screen. The showcase of this will be shown in later part of this documentation.
+
+**Note 2:** *TouchNumberToReact* can be also set in resizing and dragging behaviours. These can be found as children of FingerCameraBehaviour prefab and they are defaultly set to last touch.
 
 ## Setting default finger window parameters
 
@@ -76,6 +82,18 @@ If you don't need some of the functionality provided, you can simply delete the 
 
 **Note:** Don't forget to have an EventSystem present in the scene when interacting with the canvas buttons, otherwise controls won't work.
 
+## Using Finger Camera in UI
+
+The Finger Camera can also be easily integrated with UI elements. The key limitation, however, is that the UI canvas render mode must be set to **World Space**.
+
+![worldSpace](https://github.com/user-attachments/assets/d7074e95-caf0-4adf-85dc-c264b16bc1e3)
+
+Unfortunately, I haven't found any simple solution (that doesn't heavily impact performance) to make it work in Screen Space mode, as each Screen Space canvas can only be rendered by a single camera at a time.
+
+The usage is identical to working with 3D elements, and a demonstration is provided in **ExampleScene 2**.
+
+![FingerCameraUI-ezgif com-optimize](https://github.com/user-attachments/assets/9f0a7071-d3fb-4164-9856-b87cbe4ce7ca)
+
 ## Other properties and methods accessible in code
 
 If you need to control the finger window position/resize/zoom from code instead of the user interface, it is possible. All available methods are in the `FingerCameraBehaviour.cs` script.
@@ -94,3 +112,4 @@ If you need to control the finger window position/resize/zoom from code instead 
     - *Vector2 deltaChange:* Move the existing window by the x and y values on the screen. The coordinate origin is in the bottom left corner.
 
 **Note:** All UI parameters are in pixel units.
+

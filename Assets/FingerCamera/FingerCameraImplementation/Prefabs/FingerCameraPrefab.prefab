@@ -543,7 +543,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 15
   orthographic: 0
@@ -551,7 +551,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 789315383
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: f1ad371d824b475448f9cfc84b2d2b4e, type: 2}
   m_TargetDisplay: 0
@@ -787,6 +787,7 @@ MonoBehaviour:
   <MaxWindowSize>k__BackingField: 900
   <VerticalEdgeAnchor>k__BackingField: 1
   <HorizontalEdgeAnchor>k__BackingField: 0
+  _automaticallyUpdateWindowPosition: 0
   _fingerCameraMinDistanceClamp: 5
   _fingerCameraMaxDistanceClamp: 70
   _fingerCameraZoomStep: 1
